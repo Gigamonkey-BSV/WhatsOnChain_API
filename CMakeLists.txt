@@ -172,7 +172,7 @@ install (
 
 # Install the library binary (.a or .so files) to lib directory.
 install (
-    TARGETS whatsonchain_API
+    TARGETS whatsonchain_API nlohmann_json
     EXPORT whatsonchainTargets
     ARCHIVE
 )

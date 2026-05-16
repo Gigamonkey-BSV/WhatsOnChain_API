@@ -11,39 +11,39 @@
 #include <gigamonkey/address.hpp>
 
 namespace WhatsOnChain {
-    namespace net = data::net;
+
+    template <typename X> using awaitable = data::awaitable<X>;
+
+    using data::synced;
+
+    /*
+     * any function f that returns an awaitable<X> is an async
+     * function, which means that the function is scheduled to
+     * run at some unspecified time.
+     *
+     * If you are within an async function, use
+     *    co_await f (arguments_of_f...);
+     * to wait for the async operation to complete and return
+     * an X.
+     *
+     * If you are not within an async function, use
+     *    synced (f, arguments_of_f...);
+     * to schedule the async function and immediately wait to
+     * get an X. Function f will run in the same thread.
+     */
+
+    // the WhatsOnChain API.
+    struct API;
+
+    // to start use
+    //    API api ();          // free account
+    //    API api ("API key");
+    //    auto tx = api.transactions ().get_raw (txid);
 
     namespace Bitcoin = Gigamonkey::Bitcoin;
-    namespace Merkle = Gigamonkey::Merkle;
-    namespace secp256k1 = Gigamonkey::secp256k1;
-
-    using uint32 = data::uint32;
-    using uint64 = data::uint64;
-    using int64 = data::int64;
-    using int32 = data::int32;
-
-    using uint16 = data::uint16;
-
-    using byte = data::byte;
-    using bytes = data::bytes;
-
-    using int32_little = data::int32_little;
-    using uint32_little = data::uint32_little;
-
-    using string = data::string;
-    using N = data::N;
     using JSON = data::JSON;
 
-    using digest512 = Gigamonkey::digest512;
-    using digest256 = Gigamonkey::digest256;
-    using digest160 = Gigamonkey::digest160;
-
-    template <typename X> using ptr = data::ptr<X>;
-    template <typename X> using awaitable = data::awaitable<X>;
-    template <typename X> using maybe = data::maybe<X>;
-    template <typename ... X> using either = data::either<X...>;
-
-    template <typename X> using list = data::list<X>;
+    using uint32 = data::uint32;
 
     struct UTXO {
 
@@ -67,7 +67,8 @@ namespace WhatsOnChain {
 
     };
 
-    struct API;
+    // iterable functional list
+    template <typename X> using list = data::list<X>;
 
     struct addresses {
         struct balance {
@@ -85,10 +86,16 @@ namespace WhatsOnChain {
         WhatsOnChain::API &API;
     };
 
+    namespace Merkle = Gigamonkey::Merkle;
+    using digest256 = Gigamonkey::digest256;
+
     struct merkle_proof {
         digest256 BlockHash;
         Merkle::proof Proof;
     };
+
+    using bytes = data::bytes;
+    template <typename X> using maybe = data::maybe<X>;
 
     struct transactions {
 
@@ -102,6 +109,9 @@ namespace WhatsOnChain {
 
         WhatsOnChain::API &API;
     };
+
+    // a uint unbounded in size.
+    using N = data::N;
 
     struct header {
         N Height;
@@ -130,14 +140,30 @@ namespace WhatsOnChain {
 
     };
 
+    namespace net = data::net;
+
+    using uint64 = data::uint64;
+    using int64 = data::int64;
+    using int32 = data::int32;
+
+    using uint16 = data::uint16;
+
+    using byte = data::byte;
+
+    using int32_little = data::int32_little;
+    using uint32_little = data::uint32_little;
+
+    using string = data::string;
+
+    using digest512 = Gigamonkey::digest512;
+    using digest160 = Gigamonkey::digest160;
+
+    template <typename X> using ptr = data::ptr<X>;
+    template <typename ... X> using either = data::either<X...>;
+
     struct API : net::HTTP::client {
 
-        API (ptr<net::HTTP::SSL> ssl) :
-            net::HTTP::client {ssl,
-                net::HTTP::REST {"api.whatsonchain.com", "/v1/bsv/main"},
-                data::rate_limiter {3, data::millisecond {1000}}} {}
-
-        API (): net::HTTP::client {
+        API (): net::HTTP::client {net::HTTP::get_SSL (),
             net::HTTP::REST {"api.whatsonchain.com", "/v1/bsv/main"},
             data::rate_limiter {3, data::millisecond {1000}}} {}
 
