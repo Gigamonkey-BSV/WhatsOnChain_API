@@ -131,6 +131,8 @@ FetchContent_MakeAvailable (ctre)
 
 find_package (data CONFIG REQUIRED)
 
+find_package (net CONFIG REQUIRED)
+
 find_package (gigamonkey CONFIG REQUIRED)
 
 add_library (
@@ -143,7 +145,7 @@ target_link_libraries (
     whatsonchain_API
     PUBLIC
     Gigamonkey::Merkle
-    Data::net
+    Net::net
     nlohmann_json
 )
 

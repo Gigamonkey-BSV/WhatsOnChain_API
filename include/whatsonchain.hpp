@@ -1,8 +1,8 @@
 #ifndef COSMOS_NETWORK_WHATSONCHAIN
 #define COSMOS_NETWORK_WHATSONCHAIN
 
-#include <data/net/JSON.hpp>
-#include <data/net/HTTP_client.hpp>
+#include <net/JSON.hpp>
+#include <net/HTTP_client.hpp>
 
 #include <gigamonkey/secp256k1.hpp>
 #include <gigamonkey/merkle/proof.hpp>
@@ -41,7 +41,7 @@ namespace WhatsOnChain {
     //    auto tx = api.transactions ().get_raw (txid);
 
     namespace Bitcoin = Gigamonkey::Bitcoin;
-    using JSON = data::JSON;
+    using JSON = net::JSON;
 
     using uint32 = data::uint32;
 
@@ -139,8 +139,6 @@ namespace WhatsOnChain {
         WhatsOnChain::API &API;
 
     };
-
-    namespace net = data::net;
 
     using uint64 = data::uint64;
     using int64 = data::int64;
