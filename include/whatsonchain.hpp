@@ -165,6 +165,10 @@ namespace WhatsOnChain {
             net::HTTP::REST {"api.whatsonchain.com", "/v1/bsv/main"},
             data::rate_limiter {3, data::millisecond {1000}}} {}
 
+        API (ptr<net::HTTP::SSL> ssl): net::HTTP::client {ssl,
+            net::HTTP::REST {"api.whatsonchain.com", "/v1/bsv/main"},
+            data::rate_limiter {3, data::millisecond {1000}}} {}
+
         WhatsOnChain::addresses addresses ();
 
         WhatsOnChain::transactions transactions ();
