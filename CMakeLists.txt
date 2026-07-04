@@ -146,7 +146,7 @@ target_link_libraries (
     PUBLIC
     Gigamonkey::Merkle
     Net::net
-    nlohmann_json
+    nlohmann_json::nlohmann_json
 )
 
 target_include_directories (whatsonchain_API
