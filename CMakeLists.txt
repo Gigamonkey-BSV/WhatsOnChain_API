@@ -111,6 +111,8 @@ find_package (SECP256K1 REQUIRED)
 #     * you mighht need autoconf: `sudo apt install autoconf`
 #     * and libtool: `sudo apt-get install libtool-bin`
 
+find_package (nlohmann_json CONFIG REQUIRED)
+
 find_package (PkgConfig REQUIRED)
 
 IF (WIN32)
@@ -122,9 +124,6 @@ ENDIF ()
 
 include (FetchContent)
 cmake_policy (SET CMP0135 NEW)
-
-FetchContent_Declare (json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
-FetchContent_MakeAvailable (json)
 
 FetchContent_Declare (ctre URL https://github.com/hanickadot/compile-time-regular-expressions/archive/refs/tags/v3.10.0.zip)
 FetchContent_MakeAvailable (ctre)
@@ -174,7 +173,7 @@ install (
 
 # Install the library binary (.a or .so files) to lib directory.
 install (
-    TARGETS whatsonchain_API nlohmann_json
+    TARGETS whatsonchain_API
     EXPORT whatsonchainTargets
     ARCHIVE
 )
